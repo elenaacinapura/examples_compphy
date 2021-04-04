@@ -1,11 +1,19 @@
-find_package(CompPhy PATHS CMAKE_PREFIX_PATH $ENV{HOME}/.local/cmake)
+# find_package(CompPhy PATHS CMAKE_PREFIX_PATH $ENV{HOME}/.local/cmake)
 
-#add_executable(pippo main.c) # You may add other sources: add_executable(main main.c foo.c bar.c)
-#                             # Do not list header files (no need to list them)
 
-file(GLOB_RECURSE SRCS_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*.c")
-add_executable(pippo ${SRCS_FILES})
+add_executable(pippo main.c) # You may add other sources: add_executable(main main.c foo.c bar.c)
+                             # Do not list header files (no need to list them)
+
+# file(GLOB_RECURSE SRCS_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*.c")   # To compile all files in the directory src
+# add_executable(pippo ${SRCS_FILES})
 
 target_compile_options(pippo PRIVATE -Wall -O3 -march=native -ffast-math)
-target_include_directories(pippo PUBLIC ${COMPPHY_INCLUDE_DIR})
+# target_include_directories(pippo PUBLIC ${COMPPHY_INCLUDE_DIR})
+# target_link_libraries(pippo compphy-lib)
 target_link_libraries(pippo compphy-lib)
+
+add_custom_target(run-pippo
+    COMMAND pippo
+    DEPENDS pippo
+    WORKING_DIRECTORY ${CMAKE_PROJECT_DIR}
+)
